@@ -10,11 +10,6 @@ body {
   .text-balance {
     text-wrap: balance;
   }
-
-  /* Custom border class using the --border custom property */
-  .border-border {
-    border-color: hsl(var(--border));
-  }
 }
 
 @layer base {
@@ -53,7 +48,6 @@ body {
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
-
   .dark {
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
@@ -92,23 +86,9 @@ body {
 
 @layer base {
   * {
-    @apply border-border; /* Use the custom border class defined in @layer utilities */
+    @apply border-border;
   }
-  
   body {
-    @apply bg-background text-foreground; /* Apply background and text color from root variables */
+    @apply bg-background text-foreground;
   }
-}
-/* Ensure table doesn't collapse in print capture */
-.timetable {
-  min-width: 100%;
-  table-layout: fixed;
-  border-collapse: collapse;
-}
-
-.timetable th,
-.timetable td {
-  min-width: 120px;
-  padding: 8px;
-  border: 1px solid #ddd;
 }
