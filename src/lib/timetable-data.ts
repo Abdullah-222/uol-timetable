@@ -233,7 +233,7 @@ export const timetableData: TimetableEntry[] =
     "Start Time": "09:30",
     "End Time": "10:45",
     "Room": "CS-206",
-    "Instructor": "Shehla Saeed"
+    "Instructor": "Sadaf Masood"
   },
   {
     "Section": "BSCS-4C",
