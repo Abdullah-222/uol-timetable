@@ -11,7 +11,7 @@ export default function Home() {
           Create your personalized timetable effortlessly with our easy-to-use generator.
         </p>
         <p className="text-lg text-gray-600 text-center m-4">
-          ---- UPDATED TILL NOW ----
+          ---- UPDATED TILL NOW Version (1.1) ----
         </p>
         <p className="text-lg text-gray-600 text-center mb-5">
           This is for <span className="text-blue-500 underline">4th sem</span> now. More Coming Soon :)

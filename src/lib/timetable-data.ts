@@ -710,7 +710,7 @@ export const timetableData: TimetableEntry[] =
     "Start Time": "11:00",
     "End Time": "12:15",
     "Room": "LB3-01",
-    "Instructor": "?"
+    "Instructor": "Dr.Toqir"
   },
   {
     "Section": "BSCS-4H",
@@ -719,7 +719,7 @@ export const timetableData: TimetableEntry[] =
     "Start Time": "14:00",
     "End Time": "15:15",
     "Room": "LB3-03",
-    "Instructor": "?"
+    "Instructor": "Ishfaq"
   },
   {
     "Section": "BSCS-4H",
@@ -737,7 +737,7 @@ export const timetableData: TimetableEntry[] =
     "Start Time": "09:30",
     "End Time": "10:45",
     "Room": "E2-222",
-    "Instructor": "?"
+    "Instructor": "Dr.Toqir"
   },
   {
     "Section": "BSCS-4H",
@@ -782,7 +782,7 @@ export const timetableData: TimetableEntry[] =
     "Start Time": "15:30",
     "End Time": "16:45",
     "Room": "LB3-03",
-    "Instructor": "?"
+    "Instructor": "Ishfaq"
   },
   {
     "Section": "BSCS-4H",
@@ -827,7 +827,7 @@ export const timetableData: TimetableEntry[] =
     "Start Time": "08:00",
     "End Time": "09:15",
     "Room": "LB3-105",
-    "Instructor": "Iqra Sabeen"
+    "Instructor": "Ali Hussain"
   },
   {
     "Section": "BSCS-4I",
@@ -881,7 +881,7 @@ export const timetableData: TimetableEntry[] =
     "Start Time": "14:00",
     "End Time": "15:15",
     "Room": "LB3-01",
-    "Instructor": "Iqra Sabeen"
+    "Instructor": "Ali Hussain"
   },
   {
     "Section": "BSCS-4I",
@@ -926,7 +926,7 @@ export const timetableData: TimetableEntry[] =
     "Start Time": "14:00",
     "End Time": "15:15",
     "Room": "E2-222",
-    "Instructor": "?"
+    "Instructor": "Ishfaq"
   },
   {
     "Section": "BSCS-4J",
@@ -953,7 +953,7 @@ export const timetableData: TimetableEntry[] =
     "Start Time": "08:00",
     "End Time": "09:15",
     "Room": "LB-305",
-    "Instructor": "?"
+    "Instructor": "Ishfaq"
   },
   {
     "Section": "BSCS-4J",
@@ -971,7 +971,7 @@ export const timetableData: TimetableEntry[] =
     "Start Time": "11:00",
     "End Time": "12:15",
     "Room": "LB-304",
-    "Instructor": "Iqra Sabeen"
+    "Instructor": "Ali Hussain"
   },
   {
     "Section": "BSCS-4J",
@@ -989,7 +989,7 @@ export const timetableData: TimetableEntry[] =
     "Start Time": "08:00",
     "End Time": "09:15",
     "Room": "LB-301",
-    "Instructor": "Iqra Sabeen"
+    "Instructor": "Ali Hussain"
   },
   {
     "Section": "BSCS-4J",
@@ -1025,7 +1025,7 @@ export const timetableData: TimetableEntry[] =
     "Start Time": "15:30",
     "End Time": "16:45",
     "Room": "CS-205",
-    "Instructor": "Iqra Sabeen"
+    "Instructor": "Ali Hussain"
   },
   {
     "Section": "BSCS-4K",
@@ -1052,7 +1052,7 @@ export const timetableData: TimetableEntry[] =
     "Start Time": "11:00",
     "End Time": "13:45",
     "Room": "LAB-CS-003",
-    "Instructor": "Nimra Shafiq"
+    "Instructor": "Uzma Sanam"
   },
   {
     "Section": "BSCS-4K",
@@ -1070,7 +1070,7 @@ export const timetableData: TimetableEntry[] =
     "Start Time": "08:00",
     "End Time": "09:15",
     "Room": "CS-207",
-    "Instructor": "Nimra Shafiq"
+    "Instructor": "Uzma Sanam"
   },
   {
     "Section": "BSCS-4K",
@@ -1088,7 +1088,7 @@ export const timetableData: TimetableEntry[] =
     "Start Time": "08:00",
     "End Time": "09:15",
     "Room": "LB3-05",
-    "Instructor": "Nimra Shafiq"
+    "Instructor": "Uzma Sanam"
   },
   {
     "Section": "BSCS-4K",
@@ -1097,7 +1097,7 @@ export const timetableData: TimetableEntry[] =
     "Start Time": "09:30",
     "End Time": "10:45",
     "Room": "CS-003",
-    "Instructor": "Iqra Sabeen"
+    "Instructor": "Ali Hussain"
   },
   {
     "Section": "BSCS-4L",
@@ -1133,7 +1133,7 @@ export const timetableData: TimetableEntry[] =
     "Start Time": "08:00",
     "End Time": "09:15",
     "Room": "LB3-04",
-    "Instructor": "Nimra Shafiq"
+    "Instructor": "Uzma Sanam"
   },
   {
     "Section": "BSCS-4L",
@@ -1169,7 +1169,7 @@ export const timetableData: TimetableEntry[] =
     "Start Time": "09:30",
     "End Time": "10:45",
     "Room": "LB3-04",
-    "Instructor": "Nimra Shafiq"
+    "Instructor": "Uzma Sanam"
   },
   {
     "Section": "BSCS-4L",
@@ -1187,7 +1187,7 @@ export const timetableData: TimetableEntry[] =
     "Start Time": "11:00",
     "End Time": "13:45",
     "Room": "LAB-CS-003",
-    "Instructor": "Nimra Shafiq"
+    "Instructor": "Uzma Sanam"
   },
   {
     "Section": "BSCS-4L",
@@ -1421,7 +1421,7 @@ export const timetableData: TimetableEntry[] =
     "Start Time": "08:00",
     "End Time": "09:15",
     "Room": "CS-207",
-    "Instructor": "Ali Hussain"
+    "Instructor": "Iqra Sabeen"
   },
   {
     "Section": "BSCS-4O",
@@ -1430,7 +1430,7 @@ export const timetableData: TimetableEntry[] =
     "Start Time": "14:00",
     "End Time": "15:15",
     "Room": "CS-002",
-    "Instructor": "Dr.Ifra"
+    "Instructor": "M.Fiaz"
   },
   {
     "Section": "BSCS-4O",
@@ -1448,7 +1448,7 @@ export const timetableData: TimetableEntry[] =
     "Start Time": "08:00",
     "End Time": "09:15",
     "Room": "CS-206",
-    "Instructor": "Ali Hussain"
+    "Instructor": "Iqra Sabeen"
   },
   {
     "Section": "BSCS-4O",
@@ -1520,7 +1520,7 @@ export const timetableData: TimetableEntry[] =
     "Start Time": "15:30",
     "End Time": "16:45",
     "Room": "LB3-03",
-    "Instructor": "Ali Hussain"
+    "Instructor": "Iqra Sabeen"
   },
   {
     "Section": "BSCS-4P",
@@ -1529,7 +1529,7 @@ export const timetableData: TimetableEntry[] =
     "Start Time": "08:00",
     "End Time": "09:15",
     "Room": "LB3-06",
-    "Instructor": "Ali Raza"
+    "Instructor": "Nimra Shafiq"
   },
   {
     "Section": "BSCS-4P",
@@ -1565,7 +1565,7 @@ export const timetableData: TimetableEntry[] =
     "Start Time": "09:30",
     "End Time": "10:45",
     "Room": "LB3-06",
-    "Instructor": "Ali Raza"
+    "Instructor": "Nimra Shafiq"
   },
   {
     "Section": "BSCS-4P",
@@ -1574,7 +1574,7 @@ export const timetableData: TimetableEntry[] =
     "Start Time": "14:00",
     "End Time": "15:15",
     "Room": "CS-204",
-    "Instructor": "Ali Hussain"
+    "Instructor": "Iqra Sabeen"
   },
   {
     "Section": "BSCS-4P",
@@ -1583,7 +1583,7 @@ export const timetableData: TimetableEntry[] =
     "Start Time": "11:00",
     "End Time": "13:45",
     "Room": "LAB-CS-301",
-    "Instructor": "Ali Raza"
+    "Instructor": "Nimra Shafiq"
   },
   {
     "Section": "BSCS-4P",
@@ -1601,7 +1601,7 @@ export const timetableData: TimetableEntry[] =
     "Start Time": "08:00",
     "End Time": "09:15",
     "Room": "CS-005",
-    "Instructor": "Ali Hussain"
+    "Instructor": "Iqra Sabeen"
   },
   {
     "Section": "BSCS-4Q",
@@ -1619,7 +1619,7 @@ export const timetableData: TimetableEntry[] =
     "Start Time": "11:00",
     "End Time": "13:45",
     "Room": "LAB-CS-004",
-    "Instructor": "Ali Raza"
+    "Instructor": "Nimra Shafiq"
   },
   {
     "Section": "BSCS-4Q",
@@ -1637,7 +1637,7 @@ export const timetableData: TimetableEntry[] =
     "Start Time": "08:00",
     "End Time": "09:15",
     "Room": "LB3-06",
-    "Instructor": "Ali Raza"
+    "Instructor": "Nimra Shafiq"
   },
   {
     "Section": "BSCS-4Q",
@@ -1646,7 +1646,7 @@ export const timetableData: TimetableEntry[] =
     "Start Time": "09:30",
     "End Time": "10:45",
     "Room": "LB3-07",
-    "Instructor": "Ali Hussain"
+    "Instructor": "Iqra Sabeen"
   },
   {
     "Section": "BSCS-4Q",
@@ -1673,7 +1673,7 @@ export const timetableData: TimetableEntry[] =
     "Start Time": "08:00",
     "End Time": "09:15",
     "Room": "LB3-06",
-    "Instructor": "Ali Raza"
+    "Instructor": "Nimra Shafiq"
   },
   {
     "Section": "BSCS-4Q",
@@ -1695,48 +1695,48 @@ export const timetableData: TimetableEntry[] =
   },
   {
     "Section": "BSCS-4R",
-    "Course": "DSA",
-    "Day": "Tuesday",
-    "Start Time": "11:00",
-    "End Time": "12:15",
-    "Room": "LB3-05",
-    "Instructor": "Temur ul Hassan"
+    "Course": "",
+    "Day": "",
+    "Start Time": "",
+    "End Time": "",
+    "Room": "",
+    "Instructor": ""
   },
   {
     "Section": "BSCS-4R",
-    "Course": "SE",
-    "Day": "Tuesday",
-    "Start Time": "15:30",
-    "End Time": "16:45",
-    "Room": "CS-204",
-    "Instructor": "?"
+    "Course": "",
+    "Day": "",
+    "Start Time": "",
+    "End Time": "",
+    "Room": "",
+    "Instructor": ""
   },
   {
     "Section": "BSCS-4R",
-    "Course": "SE",
-    "Day": "Wednesday",
-    "Start Time": "08:00",
-    "End Time": "09:15",
-    "Room": "?",
-    "Instructor": "?"
+    "Course": "",
+    "Day": "",
+    "Start Time": "",
+    "End Time": "",
+    "Room": "",
+    "Instructor": ""
   },
   {
     "Section": "BSCS-4R",
-    "Course": "DSA",
-    "Day": "Wednesday",
-    "Start Time": "11:00",
-    "End Time": "12:15",
-    "Room": "ROOM1",
-    "Instructor": "Temur ul Hassan"
+    "Course": "",
+    "Day": "",
+    "Start Time": "",
+    "End Time": "",
+    "Room": "",
+    "Instructor": ""
   },
   {
     "Section": "BSCS-4R",
-    "Course": "DSA",
-    "Day": "Thursday",
-    "Start Time": "08:00",
-    "End Time": "10:45",
-    "Room": "LAB-CS-301",
-    "Instructor": "Temur ul Hassan"
+    "Course": "",
+    "Day": "",
+    "Start Time": "",
+    "End Time": "",
+    "Room": "",
+    "Instructor": ""
   }
 ]
 
