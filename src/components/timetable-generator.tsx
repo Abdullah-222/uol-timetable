@@ -9,6 +9,14 @@ import { timetableData, type TimetableEntry } from "@/lib/timetable-data"
 import html2canvas from "html2canvas"
 import jsPDF from "jspdf"
 
+// Normalize course names to handle inconsistent data
+const normalizedTimetableData = timetableData.map((entry) => {
+  let course = entry.Course
+  if (course === "OS") course = "Operating Systems"
+  if (course === "CN") course = "Computer Networks"
+  return { ...entry, Course: course }
+})
+
 export default function TimetableGenerator() {
   const [sections, setSections] = useState<string[]>([])
   const [teachers, setTeachers] = useState<string[]>([])
@@ -21,17 +29,39 @@ export default function TimetableGenerator() {
   const teacherContainerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const uniqueSections = Array.from(new Set(timetableData.map((entry) => entry.Section))).sort()
-    const uniqueTeachers = Array.from(new Set(timetableData.map((entry) => entry.Instructor))).sort()
+    const uniqueSections = Array.from(new Set(normalizedTimetableData.map((entry) => entry.Section))).sort()
+    const uniqueTeachers = Array.from(new Set(normalizedTimetableData.map((entry) => entry.Instructor))).sort()
     setSections(uniqueSections)
     setTeachers(uniqueTeachers)
   }, [])
 
+  const courseToLabMap: Record<string, string> = {
+    "Operating Systems": "OS (Lab)",
+    "OS": "OS (Lab)", // Handle abbreviation if present
+    "Computer Networks": "CN (Lab)",
+    "CN": "CN (Lab)", // Handle abbreviation if present
+    "Web": "Web (Lab)",
+    "Web Engineering": "Web (Lab)"
+  }
+
   const handleAddClass = (course: string) => {
-    const entriesToAdd = timetableData.filter(
+    // Check if course has a lab
+    const labCourse = courseToLabMap[course]
+    const hasLab = !!labCourse
+
+    // Mutual exclusion check for Web and SPM
+    if (
+      (course === "Web" && customTimetable.some((e) => e.Course === "SPM")) ||
+      (course === "SPM" && customTimetable.some((e) => e.Course === "Web" || e.Course === "Web (Lab)"))
+    ) {
+      setError("You cannot enroll in Web and SPM together.")
+      return
+    }
+
+    const entriesToAdd = normalizedTimetableData.filter(
       (entry) =>
         entry.Section === selectedCustomSection &&
-        entry.Course === course,
+        (entry.Course === course || (hasLab && entry.Course === labCourse)),
     )
 
     let conflictingClass = null
@@ -63,8 +93,11 @@ export default function TimetableGenerator() {
   }
 
   const handleRemoveClass = (course: string) => {
+    const labCourse = courseToLabMap[course]
+    const hasLab = !!labCourse
+
     setCustomTimetable((prev) =>
-      prev.filter((entry) => entry.Course !== course),
+      prev.filter((entry) => entry.Course !== course && (!hasLab || entry.Course !== labCourse)),
     )
   }
 
@@ -181,7 +214,7 @@ export default function TimetableGenerator() {
               <div ref={containerRef} className="mt-4 overflow-x-auto">
                 <div className="w-full min-w-[320px]">
                   <Timetable
-                    data={timetableData.filter((entry) => entry.Section === selectedSection)}
+                    data={normalizedTimetableData.filter((entry) => entry.Section === selectedSection)}
                     section={selectedSection}
                   />
                 </div>
@@ -224,20 +257,21 @@ export default function TimetableGenerator() {
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-4">
             <div className="lg:col-span-1">
-              <h3 className="text-lg sm:text-xl font-semibold mb-4 text-white">Available Classes</h3>
-              <div className="space-y-3 max-h-[600px] overflow-auto pr-2 custom-scrollbar">
+              <h3 className="text-lg sm:text-xl font-semibold mb-4 text-white">Theory Classes</h3>
+              <div className="space-y-3 max-h-[400px] overflow-auto pr-2 custom-scrollbar mb-6">
                 {selectedCustomSection &&
                   Array.from(
                     new Set(
-                      timetableData
+                      normalizedTimetableData
                         .filter((entry) => entry.Section === selectedCustomSection)
-                        .map((entry) => entry.Course),
+                        .map((entry) => entry.Course)
+                        .filter((course) => !course.includes("(Lab)")),
                     ),
                   ).map((course) => {
                     const isAdded = customTimetable.some(
                       (entry) => entry.Course === course,
                     )
-                    const courseEntries = timetableData.filter(
+                    const courseEntries = normalizedTimetableData.filter(
                       (entry) =>
                         entry.Section === selectedCustomSection &&
                         entry.Course === course,
@@ -266,12 +300,71 @@ export default function TimetableGenerator() {
                         </div>
                         <div className="space-y-2">
                           {courseEntries.map((entry, index) => (
-                            <div key={index} className="flex items-start text-xs sm:text-sm text-gray-300 bg-black/20 p-2 rounded">
-                              <span className="font-semibold text-accent-yellow w-16 shrink-0">{entry.Day}</span>
-                              <div className="flex flex-col">
-                                <span>{entry["Start Time"]} - {entry["End Time"]}</span>
-                                <span className="text-gray-400 text-xs">Room: {entry.Room} | {entry.Instructor}</span>
+                            <div key={index} className="flex flex-col sm:flex-row sm:items-center justify-between text-sm text-gray-300 bg-black/20 p-3 rounded gap-2">
+                              <div className="flex items-center gap-3">
+                                <span className="font-bold text-accent-yellow min-w-[5.5rem]">{entry.Day}</span>
+                                <span className="text-white font-medium">{entry["Start Time"]} - {entry["End Time"]}</span>
                               </div>
+                              <span className="text-gray-400 text-xs sm:text-right">
+                                <span className="text-accent-cyan">{entry.Room}</span> | {entry.Instructor}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )
+                  })}
+              </div>
+
+              {/* Labs Section */}
+              <h3 className="text-lg sm:text-xl font-semibold mb-4 text-white">Labs</h3>
+              <div className="space-y-3 max-h-[400px] overflow-auto pr-2 custom-scrollbar">
+                {selectedCustomSection &&
+                  Array.from(
+                    new Set(
+                      normalizedTimetableData
+                        .filter((entry) => entry.Section === selectedCustomSection)
+                        .map((entry) => entry.Course)
+                        .filter((course) => course.includes("(Lab)")),
+                    ),
+                  ).map((course) => {
+                    const isAdded = customTimetable.some(
+                      (entry) => entry.Course === course,
+                    )
+                    const courseEntries = normalizedTimetableData.filter(
+                      (entry) =>
+                        entry.Section === selectedCustomSection &&
+                        entry.Course === course,
+                    )
+
+                    // Try to find the theory course that maps to this lab
+                    const theoryCourse = Object.keys(courseToLabMap).find(key => courseToLabMap[key] === course) || course.replace(" (Lab)", "")
+
+                    return (
+                      <div key={course} className={`p-4 rounded-lg border transition-all duration-300 ${isAdded
+                        ? "bg-accent-yellow/10 border-accent-yellow/50 shadow-[0_0_15px_rgba(255,213,0,0.1)]"
+                        : "bg-white/5 border-white/10 opacity-70"
+                        }`}>
+                        <div className="flex items-center justify-between mb-3">
+                          <span className={`font-bold text-lg ${isAdded ? "text-accent-yellow" : "text-gray-400"}`}>
+                            {course}
+                          </span>
+                          <span className={`text-xs px-2 py-1 rounded border ${isAdded
+                            ? "bg-accent-yellow/20 border-accent-yellow/50 text-accent-yellow"
+                            : "bg-white/5 border-white/10 text-gray-500"}`}>
+                            {isAdded ? "Added via Theory" : `Linked to ${theoryCourse}`}
+                          </span>
+                        </div>
+                        <div className="space-y-2">
+                          {courseEntries.map((entry, index) => (
+                            <div key={index} className="flex flex-col sm:flex-row sm:items-center justify-between text-sm text-gray-300 bg-black/20 p-3 rounded gap-2">
+                              <div className="flex items-center gap-3">
+                                <span className="font-bold text-accent-yellow min-w-[5.5rem]">{entry.Day}</span>
+                                <span className="text-white font-medium">{entry["Start Time"]} - {entry["End Time"]}</span>
+                              </div>
+                              <span className="text-gray-400 text-xs sm:text-right">
+                                <span className="text-accent-cyan">{entry.Room}</span> | {entry.Instructor}
+                              </span>
                             </div>
                           ))}
                         </div>
@@ -337,7 +430,7 @@ export default function TimetableGenerator() {
                   <span className="text-accent-cyan">{selectedTeacher}</span> Classes
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {timetableData
+                  {normalizedTimetableData
                     .filter((entry) => entry.Instructor === selectedTeacher)
                     .map((entry, index) => (
                       <div key={index} className="bg-glass-gradient border border-white/10 p-5 rounded-xl hover:border-accent-cyan/50 transition-all duration-300 group">
@@ -366,7 +459,7 @@ export default function TimetableGenerator() {
                       </div>
                     ))}
                 </div>
-                {timetableData.filter((entry) => entry.Instructor === selectedTeacher).length === 0 && (
+                {normalizedTimetableData.filter((entry) => entry.Instructor === selectedTeacher).length === 0 && (
                   <p className="text-center text-gray-400">No classes found for this instructor.</p>
                 )}
               </div>

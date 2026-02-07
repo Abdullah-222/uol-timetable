@@ -91,6 +91,15 @@
   },
   {
     "Section": "BSCS-6A",
+    "Course": "Computer Networks",
+    "Day": "Tuesday",
+    "Start Time": "12:30",
+    "End Time": "13:45",
+    "Room": "LB3-02",
+    "Instructor": "Nadeem Akhtar"
+  },
+  {
+    "Section": "BSCS-6A",
     "Course": "OS (Lab)",
     "Day": "Wednesday",
     "Start Time": "09:30",
@@ -1081,7 +1090,7 @@
   },
   {
     "Section": "BSCS-6J",
-    "Course": "C.Networks",
+    "Course": "CN",
     "Day": "Friday",
     "Start Time": "08:00",
     "End Time": "09:15",
