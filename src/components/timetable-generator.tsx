@@ -72,28 +72,34 @@ export default function TimetableGenerator() {
     const timetableElement = targetRef.current
     if (!timetableElement) return
 
-    const originalStyle = {
-      overflow: timetableElement.style.overflow,
-      width: timetableElement.style.width,
-    }
-    // For card view, we might want to keep the grid layout, so don't force width to fit-content if it breaks the grid
-    // But html2canvas needs to see everything.
-    // For the grid view (teacher), it's already visible.
-    // For the table view (preset/custom), it might be scrollable.
+    // Create a clone to render full width off-screen
+    const clone = timetableElement.cloneNode(true) as HTMLElement
+    clone.style.position = "fixed"
+    clone.style.top = "0" // Render in viewport but behind or removed? proper off-screen
+    clone.style.left = "-10000px"
+    clone.style.width = "fit-content" // Force it to fit content
+    clone.style.height = "auto"
+    clone.style.overflow = "visible"
+    clone.style.maxWidth = "none"
+    clone.classList.remove("overflow-x-auto") // Remove scroll container behavior defined in class
 
-    timetableElement.style.overflow = "visible"
-    // timetableElement.style.width = "fit-content" // removing this as it might break the grid width
+    // Ensure background color is applied (if it was transparent/inherited)
+    clone.style.backgroundColor = "#030712" // bg-dark-bg
+    clone.style.color = "white"
+
+    document.body.appendChild(clone)
 
     try {
-      const canvas = await html2canvas(timetableElement, {
-        backgroundColor: "#0a0a0f",
-        scale: 2,
-        logging: true,
+      // Small delay to allow styles to apply? usually not needed but safe.
+      // await new Promise(r => setTimeout(r, 100)) 
+
+      const canvas = await html2canvas(clone, {
+        backgroundColor: "#030712",
+        scale: 2, // Retain high quality
+        logging: false,
         useCORS: true,
-        scrollX: -window.scrollX,
-        scrollY: -window.scrollY,
-        windowWidth: timetableElement.scrollWidth,
-        windowHeight: timetableElement.scrollHeight,
+        windowWidth: clone.scrollWidth,
+        windowHeight: clone.scrollHeight
       })
 
       const name = filenameSuffix || selectedSection || selectedCustomSection || "custom"
@@ -129,8 +135,7 @@ export default function TimetableGenerator() {
     } catch (error) {
       console.error("Error generating timetable:", error)
     } finally {
-      timetableElement.style.overflow = originalStyle.overflow
-      // timetableElement.style.width = originalStyle.width
+      document.body.removeChild(clone)
     }
   }
 
