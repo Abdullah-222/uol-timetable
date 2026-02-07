@@ -92,7 +92,7 @@
   {
     "Section": "BSCS-6A",
     "Course": "Computer Networks",
-    "Day": "Tuesday",
+    "Day": "Wednesday",
     "Start Time": "12:30",
     "End Time": "13:45",
     "Room": "LB3-02",
@@ -101,7 +101,7 @@
   {
     "Section": "BSCS-6A",
     "Course": "OS (Lab)",
-    "Day": "Wednesday",
+    "Day": "Thursday",
     "Start Time": "09:30",
     "End Time": "10:45",
     "Room": "LAB-CS-305",
@@ -110,7 +110,7 @@
   {
     "Section": "BSCS-6A",
     "Course": "CN (Lab)",
-    "Day": "Wednesday",
+    "Day": "Thursday",
     "Start Time": "08:00",
     "End Time": "09:15",
     "Room": "LAB-CS-001",
