@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -14,6 +18,22 @@ body {
   /* Custom border class using the --border custom property */
   .border-border {
     border-color: hsl(var(--border));
+  }
+
+  /* Glassmorphism effect */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  }
+
+  .glass-nav {
+    background: rgba(10, 10, 15, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
 }
 
@@ -92,13 +112,16 @@ body {
 
 @layer base {
   * {
-    @apply border-border; /* Use the custom border class defined in @layer utilities */
+    @apply border-border;
+    /* Use the custom border class defined in @layer utilities */
   }
-  
+
   body {
-    @apply bg-background text-foreground; /* Apply background and text color from root variables */
+    @apply bg-background text-foreground;
+    /* Apply background and text color from root variables */
   }
 }
+
 /* Ensure table doesn't collapse in print capture */
 .timetable {
   min-width: 100%;

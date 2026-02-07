@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -11,36 +11,50 @@ import jsPDF from "jspdf"
 
 export default function TimetableGenerator() {
   const [sections, setSections] = useState<string[]>([])
+  const [teachers, setTeachers] = useState<string[]>([])
   const [selectedSection, setSelectedSection] = useState("")
+  const [selectedTeacher, setSelectedTeacher] = useState("")
   const [customTimetable, setCustomTimetable] = useState<TimetableEntry[]>([])
   const [error, setError] = useState("")
   const [selectedCustomSection, setSelectedCustomSection] = useState("")
   const containerRef = useRef<HTMLDivElement>(null)
+  const teacherContainerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const uniqueSections = Array.from(new Set(timetableData.map((entry) => entry.Section)))
+    const uniqueSections = Array.from(new Set(timetableData.map((entry) => entry.Section))).sort()
+    const uniqueTeachers = Array.from(new Set(timetableData.map((entry) => entry.Instructor))).sort()
     setSections(uniqueSections)
+    setTeachers(uniqueTeachers)
   }, [])
 
   const handleAddClass = (course: string) => {
     const entriesToAdd = timetableData.filter(
       (entry) =>
         entry.Section === selectedCustomSection &&
-        (entry.Course === course || (course === "DSA" && entry.Course === "DSA-LAB")),
+        entry.Course === course,
     )
 
-    const conflict = entriesToAdd.some((newEntry) =>
-      customTimetable.some(
+    let conflictingClass = null
+    const conflict = entriesToAdd.some((newEntry) => {
+      const existingConflict = customTimetable.find(
         (existingEntry) =>
           existingEntry.Day === newEntry.Day &&
           ((existingEntry["Start Time"] <= newEntry["Start Time"] &&
             newEntry["Start Time"] < existingEntry["End Time"]) ||
             (existingEntry["Start Time"] < newEntry["End Time"] && newEntry["End Time"] <= existingEntry["End Time"])),
-      ),
-    )
+      )
+      if (existingConflict) {
+        conflictingClass = existingConflict
+        return true
+      }
+      return false
+    })
 
-    if (conflict) {
-      setError("Time conflict detected. This class overlaps with an existing class in your timetable.")
+    if (conflict && conflictingClass) {
+      const conflictEntry = conflictingClass as TimetableEntry
+      setError(
+        `Time conflict detected. ${course} (${entriesToAdd[0].Day} ${entriesToAdd[0]["Start Time"]}) overlaps with ${conflictEntry.Course} (${conflictEntry.Day} ${conflictEntry["Start Time"]}-${conflictEntry["End Time"]}).`,
+      )
       return
     }
 
@@ -50,24 +64,29 @@ export default function TimetableGenerator() {
 
   const handleRemoveClass = (course: string) => {
     setCustomTimetable((prev) =>
-      prev.filter((entry) => entry.Course !== course && !(course === "DSA" && entry.Course === "DSA-LAB")),
+      prev.filter((entry) => entry.Course !== course),
     )
   }
 
-  const downloadTimetable = async (format: "png" | "pdf") => {
-    const timetableElement = containerRef.current
+  const downloadTimetable = async (format: "png" | "pdf", targetRef: React.RefObject<HTMLDivElement | null> = containerRef, filenameSuffix: string = "") => {
+    const timetableElement = targetRef.current
     if (!timetableElement) return
 
     const originalStyle = {
       overflow: timetableElement.style.overflow,
       width: timetableElement.style.width,
     }
+    // For card view, we might want to keep the grid layout, so don't force width to fit-content if it breaks the grid
+    // But html2canvas needs to see everything.
+    // For the grid view (teacher), it's already visible.
+    // For the table view (preset/custom), it might be scrollable.
+
     timetableElement.style.overflow = "visible"
-    timetableElement.style.width = "fit-content"
+    // timetableElement.style.width = "fit-content" // removing this as it might break the grid width
 
     try {
       const canvas = await html2canvas(timetableElement, {
-        backgroundColor: "#ffffff",
+        backgroundColor: "#0a0a0f",
         scale: 2,
         logging: true,
         useCORS: true,
@@ -77,11 +96,13 @@ export default function TimetableGenerator() {
         windowHeight: timetableElement.scrollHeight,
       })
 
+      const name = filenameSuffix || selectedSection || selectedCustomSection || "custom"
+
       if (format === "png") {
         const dataUrl = canvas.toDataURL("image/png")
         const link = document.createElement("a")
         link.href = dataUrl
-        link.download = `timetable_${selectedSection || selectedCustomSection || "custom"}.png`
+        link.download = `timetable_${name}.png`
         link.click()
       } else {
         const pdf = new jsPDF("l", "mm", "a4")
@@ -103,164 +124,182 @@ export default function TimetableGenerator() {
           finalHeight,
         )
 
-        pdf.save(`timetable_${selectedSection || selectedCustomSection || "custom"}.pdf`)
+        pdf.save(`timetable_${name}.pdf`)
       }
     } catch (error) {
       console.error("Error generating timetable:", error)
     } finally {
       timetableElement.style.overflow = originalStyle.overflow
-      timetableElement.style.width = originalStyle.width
+      // timetableElement.style.width = originalStyle.width
     }
   }
 
   return (
     <Tabs defaultValue="preset" className="w-full">
-      <TabsList className="grid w-full grid-cols-2 rounded-lg bg-gray-100 p-1">
+      <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 gap-2 rounded-lg bg-dark-card p-1 border border-white/10 h-auto">
         <TabsTrigger
           value="preset"
-          className="py-2 px-4 text-center font-semibold rounded-lg transition-all duration-300 data-[state=active]:bg-blue-500 data-[state=active]:text-white"
+          className="py-2 px-4 text-center font-semibold rounded-lg transition-all duration-300 data-[state=active]:bg-accent-cyan data-[state=active]:text-dark-bg text-gray-400"
         >
           Preset Timetable
         </TabsTrigger>
         <TabsTrigger
           value="custom"
-          className="py-2 px-4 text-center font-semibold rounded-lg transition-all duration-300 data-[state=active]:bg-blue-600 data-[state=active]:text-white"
+          className="py-2 px-4 text-center font-semibold rounded-lg transition-all duration-300 data-[state=active]:bg-accent-cyan data-[state=active]:text-dark-bg text-gray-400"
         >
           Custom Timetable
+        </TabsTrigger>
+        <TabsTrigger
+          value="teacher"
+          className="py-2 px-4 text-center font-semibold rounded-lg transition-all duration-300 data-[state=active]:bg-accent-cyan data-[state=active]:text-dark-bg text-gray-400"
+        >
+          Teacher Schedule
         </TabsTrigger>
       </TabsList>
 
       <TabsContent value="preset">
-  <div className="bg-white p-6 rounded-lg shadow w-full relative">
-    <Select value={selectedSection} onValueChange={setSelectedSection}>
-      <SelectTrigger className="w-[200px]">
-        <SelectValue placeholder="Select a section" />
-      </SelectTrigger>
-      <SelectContent className="bg-white max-h-[200px] overflow-y-auto" avoidCollisions={false}>
-        {sections.map((section) => (
-          <SelectItem key={section} value={section}>
-            {section}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
-    {selectedSection && (
-      <>
-        <div ref={containerRef} className="mt-4 overflow-x-auto">
-          <div className="w-full sm:w-auto min-w-[320px]">
-            <Timetable
-              data={timetableData.filter((entry) => entry.Section === selectedSection)}
-              section={selectedSection}
-            />
-          </div>
-        </div>
-        <div className="mt-4 flex flex-wrap gap-3 justify-center sm:justify-start">
-          <Button
-            onClick={() => downloadTimetable("png")}
-            className="font-semibold border-2 bg-blue-500 text-white rounded-lg px-4 py-2 transition-transform hover:scale-105"
-          >
-            Download PNG
-          </Button>
-          <Button
-            onClick={() => downloadTimetable("pdf")}
-            className="text-black font-semibold border-2 border-black rounded-lg px-4 py-2 transition-transform hover:scale-105"
-          >
-            Download PDF
-          </Button>
-        </div>
-      </>
-    )}
-  </div>
-</TabsContent>
-
-
-      <TabsContent value="custom">
-        <div className="p-4 sm:p-6 rounded-lg shadow bg-white w-full relative">
-          <Select value={selectedCustomSection} onValueChange={setSelectedCustomSection}>
-            <SelectTrigger className="w-full sm:w-[250px]">
+        <div className="glass-card p-6 rounded-lg w-full relative">
+          <Select value={selectedSection} onValueChange={setSelectedSection}>
+            <SelectTrigger className="w-[200px] bg-dark-bg border-white/10 text-white">
               <SelectValue placeholder="Select a section" />
             </SelectTrigger>
-            <SelectContent className="bg-white max-h-[200px] overflow-y-auto">
+            <SelectContent className="bg-dark-bg border-white/10 text-white max-h-[200px] overflow-y-auto">
               {sections.map((section) => (
-                <SelectItem key={section} value={section}>
+                <SelectItem key={section} value={section} className="focus:bg-accent-cyan/20 focus:text-white cursor-pointer">
+                  {section}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {selectedSection && (
+            <>
+              <div ref={containerRef} className="mt-4 overflow-x-auto">
+                <div className="w-full min-w-[320px]">
+                  <Timetable
+                    data={timetableData.filter((entry) => entry.Section === selectedSection)}
+                    section={selectedSection}
+                  />
+                </div>
+              </div>
+              <div className="mt-4 flex flex-wrap gap-3 justify-center sm:justify-start">
+                <Button
+                  onClick={() => downloadTimetable("png")}
+                  className="font-semibold border border-accent-cyan bg-accent-cyan/20 text-accent-cyan hover:bg-accent-cyan hover:text-dark-bg rounded-lg px-4 py-2 transition-all duration-300 hover:scale-105"
+                >
+                  Download PNG
+                </Button>
+                <Button
+                  onClick={() => downloadTimetable("pdf")}
+                  className="font-semibold border border-accent-yellow bg-accent-yellow/20 text-accent-yellow hover:bg-accent-yellow hover:text-dark-bg rounded-lg px-4 py-2 transition-all duration-300 hover:scale-105"
+                >
+                  Download PDF
+                </Button>
+              </div>
+            </>
+          )}
+        </div>
+      </TabsContent>
+
+      <TabsContent value="custom">
+        <div className="p-4 sm:p-6 rounded-lg glass-card w-full relative">
+          <Select value={selectedCustomSection} onValueChange={setSelectedCustomSection}>
+            <SelectTrigger className="w-full sm:w-[250px] bg-dark-bg border-white/10 text-white">
+              <SelectValue placeholder="Select a section" />
+            </SelectTrigger>
+            <SelectContent className="bg-dark-bg border-white/10 text-white max-h-[200px] overflow-y-auto">
+              {sections.map((section) => (
+                <SelectItem key={section} value={section} className="focus:bg-accent-cyan/20 focus:text-white cursor-pointer">
                   {section}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
 
-          {error && <p className="text-red-500 mt-2">{error}</p>}
+          {error && <p className="text-red-400 mt-2">{error}</p>}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-            <div>
-              <h3 className="text-lg sm:text-xl font-semibold mb-4">Available Classes</h3>
-              <div className="space-y-2 max-h-[400px] overflow-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-4">
+            <div className="lg:col-span-1">
+              <h3 className="text-lg sm:text-xl font-semibold mb-4 text-white">Available Classes</h3>
+              <div className="space-y-3 max-h-[600px] overflow-auto pr-2 custom-scrollbar">
                 {selectedCustomSection &&
                   Array.from(
                     new Set(
                       timetableData
                         .filter((entry) => entry.Section === selectedCustomSection)
-                        .map((entry) => (entry.Course === "DSA-LAB" ? "DSA" : entry.Course)),
+                        .map((entry) => entry.Course),
                     ),
                   ).map((course) => {
                     const isAdded = customTimetable.some(
-                      (entry) => entry.Course === course || (course === "DSA" && entry.Course === "DSA-LAB"),
+                      (entry) => entry.Course === course,
                     )
                     const courseEntries = timetableData.filter(
                       (entry) =>
                         entry.Section === selectedCustomSection &&
-                        (entry.Course === course || (course === "DSA" && entry.Course === "DSA-LAB")),
+                        entry.Course === course,
                     )
 
                     return (
-                      <div key={course} className="bg-gray-100 p-3 rounded">
-                        <div className="flex items-center justify-between mb-2 flex-wrap">
-                          <span className="font-semibold break-words min-w-0">{course}</span>
+                      <div key={course} className={`p-4 rounded-lg border transition-all duration-300 ${isAdded
+                        ? "bg-accent-cyan/10 border-accent-cyan/50 shadow-[0_0_15px_rgba(0,217,255,0.1)]"
+                        : "bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20"
+                        }`}>
+                        <div className="flex items-center justify-between mb-3">
+                          <span className={`font-bold text-lg ${isAdded ? "text-accent-cyan" : "text-white"}`}>
+                            {course}
+                          </span>
                           <Button
-                            variant="outline"
+                            size="sm"
+                            variant={isAdded ? "destructive" : "default"}
                             onClick={() => (isAdded ? handleRemoveClass(course) : handleAddClass(course))}
-                            className="text-xs sm:text-sm px-2 py-1 sm:px-4 sm:py-2 bg-blue-500 text-white font-semibold"
+                            className={`h-8 px-3 font-semibold transition-all ${isAdded
+                              ? "bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white border border-red-500/50"
+                              : "bg-accent-cyan text-dark-bg hover:bg-accent-cyan/80 hover:scale-105"
+                              }`}
                           >
                             {isAdded ? "Remove" : "Add"}
                           </Button>
                         </div>
-                        <ul className="text-sm space-y-1">
+                        <div className="space-y-2">
                           {courseEntries.map((entry, index) => (
-                            <li key={index} className="break-words">
-                              {entry.Day} {entry["Start Time"]}-{entry["End Time"]} ({entry.Room})
-                            </li>
+                            <div key={index} className="flex items-start text-xs sm:text-sm text-gray-300 bg-black/20 p-2 rounded">
+                              <span className="font-semibold text-accent-yellow w-16 shrink-0">{entry.Day}</span>
+                              <div className="flex flex-col">
+                                <span>{entry["Start Time"]} - {entry["End Time"]}</span>
+                                <span className="text-gray-400 text-xs">Room: {entry.Room} | {entry.Instructor}</span>
+                              </div>
+                            </div>
                           ))}
-                        </ul>
+                        </div>
                       </div>
                     )
                   })}
               </div>
             </div>
 
-            <div>
-              <h3 className="text-lg sm:text-xl font-semibold mb-4">Custom Timetable</h3>
-              
+            <div className="lg:col-span-2">
+              <h3 className="text-lg sm:text-xl font-semibold mb-4 text-white">Custom Timetable</h3>
+
               {customTimetable.length > 0 ? (
                 <div ref={containerRef} className="overflow-x-auto">
-                  <div className="w-full sm:w-auto min-w-[320px]">
+                  <div className="w-full min-w-[320px]">
                     <Timetable data={customTimetable} section="Custom Timetable" />
                   </div>
                 </div>
               ) : (
-                <p className="text-center sm:text-left">No classes added yet.</p>
+                <p className="text-center sm:text-left text-gray-400">No classes added yet.</p>
               )}
 
               {customTimetable.length > 0 && (
                 <div className="mt-4 flex flex-wrap gap-3 justify-center sm:justify-start">
                   <Button
                     onClick={() => downloadTimetable("png")}
-                    className="text-sm sm:text-base font-semibold border-2 bg-blue-500 text-white rounded-lg px-3 py-1 sm:px-4 sm:py-2 hover:scale-105 transition"
+                    className="text-sm sm:text-base font-semibold border border-accent-cyan bg-accent-cyan/20 text-accent-cyan hover:bg-accent-cyan hover:text-dark-bg rounded-lg px-3 py-1 sm:px-4 sm:py-2 transition-all duration-300 hover:scale-105"
                   >
                     Download PNG
                   </Button>
                   <Button
                     onClick={() => downloadTimetable("pdf")}
-                    className="text-sm sm:text-base text-black font-semibold border-2 border-black rounded-lg px-3 py-1 sm:px-4 sm:py-2 hover:scale-105 transition"
+                    className="text-sm sm:text-base font-semibold border border-accent-yellow bg-accent-yellow/20 text-accent-yellow hover:bg-accent-yellow hover:text-dark-bg rounded-lg px-3 py-1 sm:px-4 sm:py-2 transition-all duration-300 hover:scale-105"
                   >
                     Download PDF
                   </Button>
@@ -270,7 +309,81 @@ export default function TimetableGenerator() {
           </div>
         </div>
       </TabsContent>
+
+      <TabsContent value="teacher">
+        <div className="glass-card p-6 rounded-lg w-full relative">
+          <Select value={selectedTeacher} onValueChange={setSelectedTeacher}>
+            <SelectTrigger className="w-[250px] bg-dark-bg border-white/10 text-white">
+              <SelectValue placeholder="Select an Instructor" />
+            </SelectTrigger>
+            <SelectContent className="bg-dark-bg border-white/10 text-white max-h-[300px] overflow-y-auto">
+              {teachers.map((teacher) => (
+                <SelectItem key={teacher} value={teacher} className="focus:bg-accent-cyan/20 focus:text-white cursor-pointer">
+                  {teacher}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          {selectedTeacher && (
+            <>
+              <div ref={teacherContainerRef} className="mt-8 bg-dark-bg/50 p-6 rounded-xl border border-white/10">
+                <h2 className="text-3xl font-bold text-center mb-8 text-white">
+                  <span className="text-accent-cyan">{selectedTeacher}</span> Classes
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {timetableData
+                    .filter((entry) => entry.Instructor === selectedTeacher)
+                    .map((entry, index) => (
+                      <div key={index} className="bg-glass-gradient border border-white/10 p-5 rounded-xl hover:border-accent-cyan/50 transition-all duration-300 group">
+                        <div className="flex justify-between items-start mb-3">
+                          <h3 className="text-xl font-bold text-white group-hover:text-accent-cyan transition-colors">
+                            {entry.Course}
+                          </h3>
+                          <span className="px-3 py-1 bg-accent-yellow/20 text-accent-yellow text-xs font-bold rounded-full border border-accent-yellow/20">
+                            {entry.Section}
+                          </span>
+                        </div>
+                        <div className="space-y-2 text-gray-300 text-sm">
+                          <div className="flex items-center gap-2">
+                            <div className="w-1.5 h-1.5 rounded-full bg-accent-cyan" />
+                            <span className="font-semibold text-white">Day:</span> {entry.Day}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <div className="w-1.5 h-1.5 rounded-full bg-accent-cyan" />
+                            <span className="font-semibold text-white">Time:</span> {entry["Start Time"]} - {entry["End Time"]}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <div className="w-1.5 h-1.5 rounded-full bg-accent-cyan" />
+                            <span className="font-semibold text-white">Room:</span> {entry.Room}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+                {timetableData.filter((entry) => entry.Instructor === selectedTeacher).length === 0 && (
+                  <p className="text-center text-gray-400">No classes found for this instructor.</p>
+                )}
+              </div>
+
+              <div className="mt-6 flex flex-wrap gap-3 justify-center sm:justify-start">
+                <Button
+                  onClick={() => downloadTimetable("png", teacherContainerRef, selectedTeacher)}
+                  className="font-semibold border border-accent-cyan bg-accent-cyan/20 text-accent-cyan hover:bg-accent-cyan hover:text-dark-bg rounded-lg px-6 py-2 transition-all duration-300 hover:scale-105"
+                >
+                  Download Schedule PNG
+                </Button>
+                <Button
+                  onClick={() => downloadTimetable("pdf", teacherContainerRef, selectedTeacher)}
+                  className="font-semibold border border-accent-yellow bg-accent-yellow/20 text-accent-yellow hover:bg-accent-yellow hover:text-dark-bg rounded-lg px-6 py-2 transition-all duration-300 hover:scale-105"
+                >
+                  Download Schedule PDF
+                </Button>
+              </div>
+            </>
+          )}
+        </div>
+      </TabsContent>
     </Tabs>
   )
 }
-
