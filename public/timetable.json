@@ -102,8 +102,8 @@
     "Section": "BSCS-6A",
     "Course": "OS (Lab)",
     "Day": "Thursday",
-    "Start Time": "09:30",
-    "End Time": "10:45",
+    "Start Time": "14:00",
+    "End Time": "16:45",
     "Room": "LAB-CS-305",
     "Instructor": "Hussnain Ayoub"
   },
@@ -111,8 +111,8 @@
     "Section": "BSCS-6A",
     "Course": "CN (Lab)",
     "Day": "Thursday",
-    "Start Time": "08:00",
-    "End Time": "09:15",
+    "Start Time": "11:00",
+    "End Time": "13:45",
     "Room": "LAB-CS-001",
     "Instructor": "Arslan Latif"
   },
