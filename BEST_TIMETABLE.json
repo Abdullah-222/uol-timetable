@@ -1,0 +1,47 @@
+[
+  {
+    "Section": "BSCS-6E",
+    "Course": "CN",
+    "Day": "Monday",
+    "Start Time": "14:00",
+    "End Time": "15:15",
+    "Room": "LB3-105",
+    "Instructor": "Raheela Batool"
+  },
+  {
+    "Section": "BSCS-6E",
+    "Course": "OS",
+    "Day": "Monday",
+    "Start Time": "12:30",
+    "End Time": "13:45",
+    "Room": "CS-001",
+    "Instructor": "Atrooba"
+  },
+  {
+    "Section": "BSCS-6E",
+    "Course": "CN (Lab)",
+    "Day": "Tuesday",
+    "Start Time": "14:30",
+    "End Time": "16:45",
+    "Room": "LAB-CS-301",
+    "Instructor": "Raheela Batool"
+  },
+  {
+    "Section": "BSCS-6E",
+    "Course": "OS (Lab)",
+    "Day": "Thursday",
+    "Start Time": "08:00",
+    "End Time": "10:45",
+    "Room": "LAB-CS-002",
+    "Instructor": "Atrooba"
+  },
+  {
+    "Section": "BSCS-6E",
+    "Course": "SPM",
+    "Day": "Wednesday",
+    "Start Time": "12:30",
+    "End Time": "13:45",
+    "Room": "CS-205",
+    "Instructor": "Sadia Khalid"
+  }
+]

@@ -1114,5 +1114,223 @@
     "End Time": "16:45",
     "Room": "LB3-08",
     "Instructor": "Saman Asad"
+  },
+  
+  {
+    "Section": "BSCS-6K",
+    "Course": "T&BW",
+    "Day": "Monday",
+    "Start Time": "08:00",
+    "End Time": "09:15",
+    "Room": "LB3-108",
+    "Instructor": "Marva Noor"
+  },
+  {
+    "Section": "BSCS-6K",
+    "Course": "C.Networks",
+    "Day": "Monday",
+    "Start Time": "09:30",
+    "End Time": "10:45",
+    "Room": "LB3-06",
+    "Instructor": "Raheela Batool"
+  },
+  {
+    "Section": "BSCS-6K",
+    "Course": "OS (Lab)",
+    "Day": "Monday",
+    "Start Time": "11:00",
+    "End Time": "13:45",
+    "Room": "LAB-CS-002",
+    "Instructor": "Anum Munir"
+  },
+  {
+    "Section": "BSCS-6K",
+    "Course": "SPM",
+    "Day": "Monday",
+    "Start Time": "14:00",
+    "End Time": "15:15",
+    "Room": "CS-005",
+    "Instructor": "Rabiya Ali"
+  },
+  {
+    "Section": "BSCS-6K",
+    "Course": "OS",
+    "Day": "Monday",
+    "Start Time": "15:30",
+    "End Time": "16:45",
+    "Room": "CS-206",
+    "Instructor": "Anum Munir"
+  },
+  {
+    "Section": "BSCS-6K",
+    "Course": "CN (Lab)",
+    "Day": "Tuesday",
+    "Start Time": "8:00",
+    "End Time": "10:45",
+    "Room": "LAB-CS-306",
+    "Instructor": "Raheela Batool"
+  },
+  {
+    "Section": "BSCS-6K",
+    "Course": "OS",
+    "Day": "Tuesday",
+    "Start Time": "11:00",
+    "End Time": "12:15",
+    "Room": "ITC-CS-306",
+    "Instructor": "Anum Munir"
+  },
+  {
+    "Section": "BSCS-6K",
+    "Course": "Adv.SE",
+    "Day": "Tuesday",
+    "Start Time": "14:00",
+    "End Time": "15:15",
+    "Room": "CS-201",
+    "Instructor": "Saman Asad"
+  },
+  {
+    "Section": "BSCS-6K",
+    "Course": "SPM",
+    "Day": "Tuesday",
+    "Start Time": "15:30",
+    "End Time": "16:45",
+    "Room": "CS-002",
+    "Instructor": "Rabiya Ali"
+  },
+  {
+    "Section": "BSCS-6K",
+    "Course": "C.Networks",
+    "Day": "Friday",
+    "Start Time": "08:00",
+    "End Time": "09:15",
+    "Room": "LB3-108",
+    "Instructor": "Raheela Batool"
+  },
+  {
+    "Section": "BSCS-6K",
+    "Course": "T&BW",
+    "Day": "Friday",
+    "Start Time": "09:30",
+    "End Time": "10:45",
+    "Room": "ITC-CS-305",
+    "Instructor": "Marva Noor"
+  },
+  {
+    "Section": "BSCS-6K",
+    "Course": "Adv.SE",
+    "Day": "Friday",
+    "Start Time": "14:00",
+    "End Time": "15:15",
+    "Room": "LB3-105",
+    "Instructor": "Saman Asad"
+  },
+  {
+    "Section": "BSCS-6L",
+    "Course": "T&BW",
+    "Day": "Tuesday",
+    "Start Time": "09:30",
+    "End Time": "10:45",
+    "Room": "LB3-04",
+    "Instructor": "Marva Noor"
+  },
+  {
+    "Section": "BSCS-6L",
+    "Course": "SPM",
+    "Day": "Tuesday",
+    "Start Time": "11:00",
+    "End Time": "12:15",
+    "Room": "ITC-CS-308",
+    "Instructor": "Amna Shoukat"
+  },
+  {
+    "Section": "BSCS-6L",
+    "Course": "Adv.SE",
+    "Day": "Tuesday",
+    "Start Time": "15:30",
+    "End Time": "16:45",
+    "Room": "ITC-CS-305",
+    "Instructor": "Ayesha Rafique"
+  },
+  {
+    "Section": "BSCS-6L",
+    "Course": "SPM",
+    "Day": "Thursday",
+    "Start Time": "11:00",
+    "End Time": "12:15",
+    "Room": "ITC-CS-308",
+    "Instructor": "Amna Shoukat"
+  },
+  {
+    "Section": "BSCS-6L",
+    "Course": "OS",
+    "Day": "Thursday",
+    "Start Time": "14:00",
+    "End Time": "15:15",
+    "Room": "LB3-05",
+    "Instructor": "Junaid Asghar"
+  },
+  {
+    "Section": "BSCS-6L",
+    "Course": "C.Networks",
+    "Day": "Thursday",
+    "Start Time": "15:40",
+    "End Time": "16:45",
+    "Room": "ITC-CS-308",
+    "Instructor": "Sana Saeed"
+  },
+  {
+    "Section": "BSCS-6L",
+    "Course": "Adv.SE",
+    "Day": "Friday",
+    "Start Time": "09:30",
+    "End Time": "10:45",
+    "Room": "ITC-CS-306",
+    "Instructor": "Ayesha Rafique"
+  },
+  {
+    "Section": "BSCS-6L",
+    "Course": "T&BW",
+    "Day": "Friday",
+    "Start Time": "11:00",
+    "End Time": "12:15",
+    "Room": "LB3-07",
+    "Instructor": "Marva Noor"
+  },
+  {
+    "Section": "BSCS-6L",
+    "Course": "OS",
+    "Day": "Friday",
+    "Start Time": "14:00",
+    "End Time": "15:15",
+    "Room": "LB3-108",
+    "Instructor": "Junaid Asghar"
+  },
+  {
+    "Section": "BSCS-6L",
+    "Course": "C.Networks",
+    "Day": "Friday",
+    "Start Time": "15:30",
+    "End Time": "16:45",
+    "Room": "LB3-01",
+    "Instructor": "Sana Saeed"
+  },
+  {
+    "Section": "BSCS-6L",
+    "Course": "OS (Lab)",
+    "Day": "Saturday",
+    "Start Time": "8:00",
+    "End Time": "10:45",
+    "Room": "LAB-CS-004",
+    "Instructor": "Junaid Asghar"
+  },
+  {
+    "Section": "BSCS-6L",
+    "Course": "CN (Lab)",
+    "Day": "Saturday",
+    "Start Time": "12:30",
+    "End Time": "15:15",
+    "Room": "LAB-CS-303",
+    "Instructor": "Sana Saeed"
   }
+
 ]
